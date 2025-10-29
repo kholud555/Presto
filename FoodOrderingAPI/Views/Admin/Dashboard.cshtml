@@ -1,0 +1,523 @@
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model FoodOrderingAPI.DTO.DashboardDto
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var requestVerificationToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+    var activeTab = ViewData["ActiveTab"] as string ?? "restaurant";
+    var statusList = (IEnumerable<SelectListItem>)ViewData["StatusList"];
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+}
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+        console.log('✅ Token received from Angular:', token);
+        sessionStorage.setItem('authToken', token);
+        const newUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+    } else {
+        console.warn('⚠️ No token found in query string');
+    }
+</script>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top border-bottom bg-white shadow-sm">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold fs-4" href="#" style="font-family: 'Georgia', serif;">Presto</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin"
+                aria-controls="navbarAdmin" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarAdmin">
+            <ul class="navbar-nav align-items-center gap-3 mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <button id="chatBtn" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" type="button" title="Go to Chat">
+                        <i class="bi bi-chat"></i> Chat
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button id="darkModeToggle" class="btn btn-outline-dark btn-sm" type="button" title="Toggle Dark Mode"></button>
+                </li>
+                <li class="nav-item">
+                    <button id="logoutBtn" class="btn btn-danger btn-sm" type="button">Log out</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid mt-4 px-4">
+    <h1 class="mb-4 fw-bold">@ViewData["Title"]</h1>
+    <div class="row gx-4">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-none d-md-block sidebar shadow-sm">
+            <ul class="nav nav-pills flex-column" id="dashboardTabs" role="tablist" aria-orientation="vertical">
+                <li class="nav-item mb-2" role="presentation">
+                    <button class="nav-link @(activeTab == "admin" ? "active" : "")" id="admin-tab" data-bs-toggle="pill" data-bs-target="#admin"
+                            type="button" role="tab" aria-controls="admin" aria-selected="@(activeTab == "admin" ? "true" : "false")">
+                        <i class="bi bi-shield-lock me-2"></i> Admin Control
+                    </button>
+                </li>
+                <li class="nav-item mb-2" role="presentation">
+                    <button class="nav-link @(activeTab == "restaurant" ? "active" : "")" id="restaurant-tab" data-bs-toggle="pill" data-bs-target="#restaurant"
+                            type="button" role="tab" aria-controls="restaurant" aria-selected="@(activeTab == "restaurant" ? "true" : "false")">
+                        <i class="bi bi-shop me-2"></i> Restaurant Control
+                    </button>
+                </li>
+                <li class="nav-item mb-2" role="presentation">
+                    <button class="nav-link @(activeTab == "customer" ? "active" : "")" id="customer-tab" data-bs-toggle="pill" data-bs-target="#customer"
+                            type="button" role="tab" aria-controls="customer" aria-selected="@(activeTab == "customer" ? "true" : "false")">
+                        <i class="bi bi-people me-2"></i> Customer Control
+                    </button>
+                </li>
+                <li class="nav-item mb-2" role="presentation">
+                    <button class="nav-link @(activeTab == "orders" ? "active" : "")" id="orders-tab" data-bs-toggle="pill" data-bs-target="#orders"
+                            type="button" role="tab" aria-controls="orders" aria-selected="@(activeTab == "orders" ? "true" : "false")">
+                        <i class="bi bi-basket me-2"></i> Orders Control
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(activeTab == "deliveryman" ? "active" : "")" id="deliveryman-tab" data-bs-toggle="pill" data-bs-target="#deliveryman"
+                            type="button" role="tab" aria-controls="deliveryman" aria-selected="@(activeTab == "deliveryman" ? "true" : "false")">
+                        <i class="bi bi-truck me-2"></i> Delivery Man Control
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 col-lg-10">
+            <div class="tab-content" id="dashboardTabsContent">
+                <!-- Admin tab -->
+                <div class="tab-pane fade @(activeTab == "admin" ? "show active" : "")" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Admins</h5>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>UserName</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var admin in Model.Admins)
+                                        {
+                                            <tr>
+                                                <td>@admin.User.UserName</td>
+                                                <td>@admin.User.Email</td>
+                                                <td>@admin.User.PhoneNumber</td>
+                                                <td class="text-center">
+                                                    <a asp-action="EditAdmin" asp-route-userId="@admin.User.UserName" class="btn btn-primary btn-sm" title="Update Admin">
+                                                        <i class="bi bi-pencil-square"></i> Update
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant tab -->
+                <div class="tab-pane fade @(activeTab == "restaurant" ? "show active" : "")" id="restaurant" role="tabpanel" aria-labelledby="restaurant-tab">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Active Restaurants</h5>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover align-middle mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Location</th>
+                                            <th>Open Hours</th>
+                                            <th>Delivery Price</th>
+                                            <th>Order Time</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var rest in Model.ActiveRestaurants)
+                                        {
+                                            <tr>
+                                                <td>@rest.RestaurantName</td>
+                                                <td>@rest.Location</td>
+                                                <td>@rest.OpenHours</td>
+                                                <td>@rest.DelivaryPrice.ToString("C")</td>
+                                                <td>@rest.orderTime</td>
+                                                <td class="text-center">
+                                                    <form asp-action="DeactivateRestaurant" method="post" class="d-inline">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@rest.User.UserName" />
+                                                        <input type="hidden" name="activeTab" value="restaurant" />
+                                                        <button class="btn btn-warning btn-sm me-1" type="submit" title="Deactivate">
+                                                            <i class="bi bi-x-circle"></i> Deactivate
+                                                        </button>
+                                                    </form>
+                                                    <form asp-action="DeleteRestaurant" method="post" class="d-inline" onsubmit="return confirm('Confirm delete?');">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@rest.User.UserName" />
+                                                        <input type="hidden" name="activeTab" value="restaurant" />
+                                                        <button class="btn btn-danger btn-sm" type="submit" title="Delete">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="card-title mb-0">Inactive Restaurants</h5>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover align-middle mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Location</th>
+                                            <th>Open Hours</th>
+                                            <th>Delivery Price</th>
+                                            <th>Order Time</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var rest in Model.InactiveRestaurants)
+                                        {
+                                            <tr>
+                                                <td>@rest.RestaurantName</td>
+                                                <td>@rest.Location</td>
+                                                <td>@rest.OpenHours</td>
+                                                <td>@rest.DelivaryPrice.ToString("C")</td>
+                                                <td>@rest.orderTime</td>
+                                                <td class="text-center">
+                                                    <form asp-action="ActivateRestaurant" method="post" class="d-inline">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@rest.User.UserName" />
+                                                        <input type="hidden" name="activeTab" value="restaurant" />
+                                                        <button class="btn btn-success btn-sm me-1" type="submit" title="Activate">
+                                                            <i class="bi bi-check-circle"></i> Activate
+                                                        </button>
+                                                    </form>
+                                                    <form asp-action="DeleteRestaurant" method="post" class="d-inline" onsubmit="return confirm('Confirm delete?');">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@rest.User.UserName" />
+                                                        <input type="hidden" name="activeTab" value="restaurant" />
+                                                        <button class="btn btn-danger btn-sm" type="submit" title="Delete">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deliveryman tab -->
+                <div class="tab-pane fade @(activeTab == "deliveryman" ? "show active" : "")" id="deliveryman" role="tabpanel" aria-labelledby="deliveryman-tab">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Active Delivery Men</h5>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover align-middle mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Account Status</th>
+                                            <th>User Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var del in Model.ActiveDeliveryMen)
+                                        {
+                                            <tr>
+                                                <td>@del.AccountStatus</td>
+                                                <td>@del.User.UserName</td>
+                                                <td>@del.User.Email</td>
+                                                <td>@del.User.PhoneNumber</td>
+                                                <td class="text-center">
+                                                    <form asp-action="DeactivateDeliveryMen" method="post" class="d-inline">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@del.User.UserName" />
+                                                        <input type="hidden" name="activeTab" value="deliveryman" />
+                                                        <button class="btn btn-warning btn-sm me-1" type="submit" title="Deactivate">
+                                                            <i class="bi bi-x-circle"></i> Deactivate
+                                                        </button>
+                                                    </form>
+                                                    <form asp-action="DeleteDeliveryMan" method="post" class="d-inline" onsubmit="return confirm('Confirm delete?');">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@del.User.UserName" />
+                                                        <input type="hidden" name="activeTab" value="deliveryman" />
+                                                        <button class="btn btn-danger btn-sm" type="submit" title="Delete">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="card-title mb-0">Inactive Delivery Men</h5>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover align-middle mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Account Status</th>
+                                            <th>User Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var del in Model.InactiveDeliveryMen)
+                                        {
+                                            <tr>
+                                                <td>@del.AccountStatus</td>
+                                                <td>@del.User.UserName</td>
+                                                <td>@del.User.Email</td>
+                                                <td>@del.User.PhoneNumber</td>
+                                                <td class="text-center">
+                                                    <form asp-action="ActivateDeliveryMen" method="post" class="d-inline">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@del.User.UserName" />
+                                                        <input type="hidden" name="activeTab" value="deliveryman" />
+                                                        <button class="btn btn-success btn-sm me-1" type="submit" title="Activate">
+                                                            <i class="bi bi-check-circle"></i> Activate
+                                                        </button>
+                                                    </form>
+                                                    <form asp-action="DeleteDeliveryMan" method="post" class="d-inline" onsubmit="return confirm('Confirm delete?');">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@del.User.UserName" />
+                                                        <input type="hidden" name="activeTab" value="deliveryman" />
+                                                        <button class="btn btn-danger btn-sm" type="submit" title="Delete">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer tab -->
+                <div class="tab-pane fade @(activeTab == "customer" ? "show active" : "")" id="customer" role="tabpanel" aria-labelledby="customer-tab">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Customers</h5>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover align-middle mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>User Name</th>
+                                            <th>Email</th>
+                                            <th>Loyalty Points</th>
+                                            <th>Total Orders</th>
+                                            <th>Delivered Orders</th>
+                                            <th>In Process Orders</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var customer in Model.Customers)
+                                        {
+                                            <tr>
+                                                <td>@customer.UserName</td>
+                                                <td>@customer.Email</td>
+                                                <td>@customer.TotalOrders</td>
+                                                <td>@customer.TotalDeliveredOrders</td>
+                                                <td style="min-width:250px;">
+                                                    @if (customer.InProcessOrders != null && customer.InProcessOrders.Any())
+                                                    {
+                                                        <ul class="mb-0 ps-3 order-item-list">
+                                                            @foreach (var order in customer.InProcessOrders)
+                                                            {
+                                                                <li>
+                                                                    <strong>Order Date:</strong> @order.OrderDate.ToShortDateString(),
+                                                                    <strong>Total:</strong> @order.TotalPrice.ToString("C"),
+                                                                    <strong>Status:</strong> @order.Status,
+                                                                    <strong>Items:</strong> @string.Join(", ", order.OrderItems.Select(o => $"{o.itemName} (x{o.Quantity})"))
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    }
+                                                    else
+                                                    {
+                                                        <em>No In-Process Orders</em>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders tab -->
+                <div class="tab-pane fade @(activeTab == "orders" ? "show active" : "")" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                    <div class="card shadow-sm">
+                        <div class="orders-card-header">
+                            <h5>Orders</h5>
+                            <form method="get" asp-action="Dashboard" class="orders-filter-form">
+                                <input type="hidden" name="activeTab" value="orders" />
+                                <label asp-for="SelectedStatus" class="visually-hidden">Selected Status</label>
+                                <select asp-for="SelectedStatus" asp-items="statusList"></select>
+                                <button type="submit" class="btn btn-light btn-sm">Filter</button>
+                            </form>
+                        </div>
+                        <div class="card-body p-2 table-responsive">
+                            <table class="table table-striped table-hover align-middle mb-0">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Customer Name</th>
+                                        <th>Customer Email</th>
+                                        <th>Customer Phone</th>
+                                        <th class="restaurant-id">Restaurant ID</th>
+                                        <th>Order Number</th>
+                                        <th>Order Date</th>
+                                        <th>Status</th>
+                                        <th>Order Total Price</th>
+                                        <th>Order Items</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model.Orders)
+                                    {
+                                        <tr>
+                                            <td>@order.Customer.FirstName @order.Customer.LastName</td>
+                                            <td>@order.Customer.Email</td>
+                                            <td>@order.Customer.PhoneNumber</td>
+                                            <td class="restaurant-id" title="@order.RestaurantID">@order.RestaurantID</td>
+                                            <td>@order.OrderNumber</td>
+                                            <td>@order.OrderDate.ToShortDateString()</td>
+                                            <td>@order.Status</td>
+                                            <td>@order.TotalPrice.ToString("C")</td>
+                                            <td>
+                                                <ul class="mb-0 ps-3 order-item-list list-unstyled">
+                                                    @foreach (var item in order.OrderItems)
+                                                    {
+                                                        <li>
+                                                            <div><strong>Item Name:</strong> @item.itemName</div>
+                                                            <div><strong>Preferences:</strong> @item.Preferences</div>
+                                                            <div><strong>Quantity:</strong> @item.Quantity</div>
+                                                            <div><strong>Total Price:</strong> @item.TotalPrice.ToString("C")</div>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating AI Chatbot Icon -->
+                <button id="floatingChatBtn" title="Chat with AI"
+                        class="btn btn-primary rounded-circle shadow position-fixed"
+                        style="bottom: 20px; right: 20px; width: 50px; height: 50px; z-index: 1050;">
+                    <i class="bi bi-robot" style="font-size: 1.5rem;"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        body.classList.add('dark-mode');
+        darkModeToggle.textContent = '☀️ Light Mode';
+    } else {
+        darkModeToggle.textContent = '🌙 Dark Mode';
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        if (body.classList.contains('dark-mode')) {
+            darkModeToggle.textContent = '☀️ Light Mode';
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            darkModeToggle.textContent = '🌙 Dark Mode';
+            localStorage.setItem('darkMode', 'disabled');
+        }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+        fetch('@Url.Action("Logout", "Admin")', {
+            method: 'POST',
+            headers: {
+                'RequestVerificationToken': '@requestVerificationToken',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = 'http://localhost:4200/home';
+            } else {
+                response.text().then(text => alert('Logout failed: ' + text));
+            }
+        })
+        .catch(err => alert('Logout failed: ' + err.message));
+    });
+
+    document.getElementById('chatBtn').addEventListener('click', function () {
+        window.location.href = '@Url.Action("AdminChat", "Admin")';
+    });
+
+    document.getElementById('floatingChatBtn').addEventListener('click', function () {
+        window.location.href = '@Url.Action("AiChatBot", "Admin")';
+    });
+</script>
