@@ -1,0 +1,382 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background: url("../../../../public/Assets/SeamlessPattren.jpg");
+}
+
+.full-width {
+  width: 100%; /* Makes form field fill the container's width */
+  margin-bottom: 16px; /* Adds vertical spacing between fields */
+  display: block; /* Ensures it behaves as block element */
+}
+
+/*style the error messages */
+mat-error {
+  font-size: 0.85rem;
+  /* color: #f44336;  */
+  margin-top: 4px;
+}
+
+/*style <mat-label> font appearance */
+mat-label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--title-color); /* Default Angular Material label color */
+}
+
+.card {
+  background-color: var(--second-color);
+}
+.registration-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg) 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-sm);
+  font-family: var(--title-font);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--title-color);
+  font-family: var(--subtitle-font);
+  font-weight: 900;
+  margin-bottom: 0;
+}
+
+.registration-form {
+  max-width: 600px;
+  /* margin: 0 auto; */
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--text-color-light);
+  padding: 4px;
+}
+
+.password-requirements {
+  margin-top: var(--spacing-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.requirement {
+  font-size: 0.8rem;
+  color: var(--error-color);
+  transition: color 0.3s ease;
+}
+
+.requirement.met {
+  color: var(--success-color);
+}
+
+.location-info {
+  font-size: 0.9rem;
+  color: var(--text-color-light);
+  margin-bottom: var(--spacing-sm);
+  font-style: italic;
+}
+
+.location-display {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--container-color);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.9rem;
+}
+
+.location-display p {
+  margin: 2px 0;
+}
+
+.terms-link {
+  color: var(--first-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.terms-link:hover {
+  text-decoration: underline;
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: var(--spacing-lg);
+  font-size: 1.1rem;
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.submit-message {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  text-align: center;
+  font-weight: 500;
+}
+
+.submit-message.success {
+  background-color: rgba(134, 142, 150, 0.1);
+  color: var(--success-color);
+  border: 1px solid var(--success-color);
+}
+
+.submit-message.error {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: var(--error-color);
+  border: 1px solid var(--error-color);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--first-color);
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .registration-form {
+    max-width: 100%;
+  }
+}
+
+/* CSS */
+.button-8 {
+  touch-action: manipulation;
+  appearance: button;
+  background-color: transparent;
+  border-style: initial;
+  border-width: 0;
+  cursor: pointer;
+  margin: 0;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.button-8:focus {
+  outline: 0;
+}
+
+.button-8 {
+  touch-action: manipulation;
+  background-image: linear-gradient(161.15deg, #f38c25 12.73%, #fb6848 72.95%);
+
+  border-radius: 8px;
+  color: var(--white-color);
+  font-family: var(--title-font);
+  font-feature-settings: "ss01", "cv10", "calt" 0, "liga" 0;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 24px;
+  padding: 10px 20px;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.6, 0.6, 0, 1),
+    margin-top 0.2s cubic-bezier(0.6, 0.6, 0, 1);
+  transition-behavior: normal, normal;
+}
+
+.button-8::before {
+  -webkit-mask-clip: content-box, initial;
+  -webkit-mask-composite: xor;
+  -webkit-mask-image: linear-gradient(#fff 0, #fff 0),
+    linear-gradient(#fff 0, #fff 0);
+  -webkit-mask-origin: content-box, initial;
+  -webkit-mask-position-x: initial, initial;
+  -webkit-mask-position-y: initial, initial;
+  -webkit-mask-repeat-x: initial, initial;
+  -webkit-mask-repeat-y: initial, initial;
+  -webkit-mask-size: initial, initial;
+  padding: 1px;
+}
+
+.button-8::before {
+  background-color: initial;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.32), transparent);
+  bottom: 0;
+  pointer-events: none;
+  right: 0;
+}
+
+.button-8::after,
+.button-8::before {
+  border-radius: inherit;
+  content: "";
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.button-8::after {
+  box-shadow: #000019 0 0, rgba(0, 0, 25, 0.3) 0 9px 21px,
+    rgba(73, 2, 57, 0.2) 0 -3px inset;
+  height: 100%;
+  transition: box-shadow 0.2s cubic-bezier(0.6, 0.6, 0, 1),
+    background-color 0.2s cubic-bezier(0.6, 0.6, 0, 1);
+  transition-behavior: normal, normal;
+  width: 100%;
+  z-index: 1;
+}
+
+.button-8:active {
+  transform: translateY(1.5px);
+}
+
+.button-8:hover::after {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.button-8:active::after {
+  box-shadow: #191200 0 0, rgba(25, 13, 0, 0.2) 0 9px 21px,
+    rgba(73, 35, 2, 0.2) 0 0 inset;
+}
+
+/* شكل موحّد للمدخلات */
+.styled-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* لون نص الباسورد وخلفيته */
+.password-black ::ng-deep input {
+  color: rgb(206, 21, 21) !important;
+}
+
+.password-black ::ng-deep .p-inputtext {
+  background-color: white;
+}
+
+/* ضبط الـ p-password عشان يطابق الارتفاع والـ padding */
+.password-black ::ng-deep .p-password {
+  width: 100%;
+}
+
+.password-black ::ng-deep .p-inputtext {
+  padding: 0.75rem 1rem !important;
+  border-radius: 6px !important;
+  border: 1px solid #ccc !important;
+}
+
+/* الحقل الأساسي */
+::ng-deep .styled-password {
+  width: 100%;
+}
+
+::ng-deep .styled-password input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  color: black;
+  background-color: white;
+}
+
+/* صندوق مقياس قوة الباسورد */
+::ng-deep .p-password-panel {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #ccc !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+/* نص المقياس */
+::ng-deep .p-password-panel .p-password-meter {
+  background: #e0e0e0; /* لون الخلفية الفارغة للمقياس */
+  border-radius: 6px;
+}
+
+/* اللون لما تكون ضعيفة */
+::ng-deep .p-password-weak {
+  background: #ff4d4f !important; /* أحمر */
+}
+
+/* اللون لما تكون متوسطة */
+::ng-deep .p-password-medium {
+  background: #faad14 !important; /* أصفر */
+}
+
+/* اللون لما تكون قوية */
+::ng-deep .p-password-strong {
+  background: #52c41a !important; /* أخضر */
+}
+
+/* تغيير لون البانل اللي بيطلع لما تكتب باسورد */
+::ng-deep .p-password-panel {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #ccc !important;
+}
+
+/* لو فيه تلميح Tooltip من PrimeNG */
+::ng-deep .p-tooltip {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #ccc !important;
+}
+
+::ng-deep .p-tooltip-arrow {
+  border-top-color: white !important;
+}
+
+.styled-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.styled-password ::ng-deep input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  color: black;
+  background: white;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.form-label {
+  font-size: 19px;
+  font-family: var(--title-font);
+  color: var(--text-color);
+}

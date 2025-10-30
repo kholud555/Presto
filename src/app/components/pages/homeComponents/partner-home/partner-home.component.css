@@ -1,0 +1,282 @@
+.container {
+  max-width: 1120px;
+  margin-inline: clamp(1rem, 5vw, 1.5rem);
+}
+
+.grid {
+  display: grid;
+  gap: clamp(1rem, 3vw, 1.5rem);
+}
+
+.section {
+  padding-block: clamp(3rem, 8vw, 5rem) clamp(0.5rem, 2vw, 1rem);
+}
+
+.restaurant_container {
+  padding-block: clamp(2.5rem, 6vw, 4rem) clamp(2rem, 5vw, 3rem);
+  row-gap: clamp(2rem, 5vw, 3rem);
+  justify-content: center;
+}
+
+/* Partner card styles */
+.partner-card {
+  position: relative;
+  border-radius: clamp(15px, 3vw, 20px);
+  padding: clamp(1.5rem, 4vw, 2rem);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: clamp(250px, 40vw, 280px);
+  width: min(90vw, 600px);
+  border: 2px solid rgba(255, 140, 0, 0.1);
+}
+
+.partner-card--dark {
+  background-image: url(../../../../../../public/Assets/restaurant.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  background-color: var(--title-color);
+}
+
+.partner-card--yellow {
+  background-image: url(../../../../../../public/Assets/deli.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  background-color: var(--footer-color);
+}
+
+.partner-card__content {
+  flex: 1;
+  z-index: 2;
+}
+
+.partner-card__badge {
+  position: absolute;
+  top: clamp(15px, 3vw, 20px);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  padding: clamp(0.375rem, 1.5vw, 0.5rem) clamp(0.75rem, 2vw, 1rem);
+  display: inline-block;
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  font-weight: 500;
+  color: var(--white-color);
+  font-family: var(--body-font);
+}
+
+.partner-card__badge--light {
+  background: rgba(133, 113, 113, 0.1);
+  color: #1a1a2e;
+}
+
+.logo-partner {
+  font-family: var(--title-font);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: var(--footer-color);
+  font-weight: 800;
+}
+
+.partner-card__title--dark {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  margin-bottom: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.2;
+  color: var(--text-color);
+  font-family: var(--subtitle-font);
+}
+
+.partner-card__title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  margin-bottom: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.2;
+  color: var(--body-color);
+  font-family: var(--subtitle-font);
+}
+
+.partner-card__button {
+  background: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: clamp(0.875rem, 2.5vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.partner-card__button:hover {
+  background: #e55a2b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+}
+
+.card_content {
+  background-color: #ff6b35;
+}
+
+.logo_container {
+  margin-top: clamp(1rem, 3vw, 1.5rem);
+}
+
+.logo {
+  font-family: var(--title-font);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: #5b3524;
+  font-weight: 800;
+}
+
+.btns {
+  padding: clamp(10px, 2.5vw, 12px) clamp(25px, 6vw, 35px);
+  background-image: var(--linear-gradient);
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  margin-top: clamp(15px, 4vw, 20px);
+}
+
+.btns:hover {
+  background: transparent;
+  border: 2px solid var(--first-color-alt);
+  color: var(--first-color-alt);
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 15px rgba(255, 140, 0, 0.3);
+}
+
+.btns:hover a {
+  color: var(--first-color-alt);
+}
+
+.partner-card__image {
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: clamp(150px, 30vw, 200px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-placeholder::after {
+  content: "Image Placeholder";
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+}
+
+/* Mobile-first responsive adjustments */
+@media screen and (max-width: 768px) {
+  .partner-card {
+    flex-direction: column;
+    text-align: center;
+    min-height: auto;
+    width: min(95vw, 500px);
+  }
+
+  .partner-card--dark,
+  .partner-card--yellow {
+    background-size: 40%;
+    background-position: center bottom;
+  }
+
+  .partner-card__image {
+    margin-top: clamp(1rem, 3vw, 1.5rem);
+    width: 90%;
+  }
+
+  .logo_container,
+  .btns,
+  .partner-card__title,
+  .partner-card__title--dark {
+    margin-right: 0;
+    margin-top: 0;
+  }
+
+  .partner-card__badge {
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    top: 0;
+  }
+  .partner-card--dark,
+  .partner-card--yellow {
+    background-image: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .partner-card {
+    width: min(98vw, 400px);
+  }
+
+  .partner-card--dark,
+  .partner-card--yellow {
+    background-size: 35%;
+  }
+  .partner-card--dark,
+  .partner-card--yellow {
+    background-image: none;
+  }
+}
+
+/* Desktop Layout */
+@media screen and (min-width: 769px) and (max-width: 1149px) {
+  .partner-card {
+    width: min(80vw, 550px);
+    min-height: clamp(280px, 35vw, 350px);
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .container {
+    margin-inline: auto;
+  }
+
+  .section {
+    padding: clamp(1rem, 2vw, 2rem);
+  }
+
+  .restaurant_container {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    column-gap: clamp(2.5rem, 5vw, 3.5rem);
+    padding-block: clamp(4rem, 8vw, 5rem) clamp(7rem, 12vw, 9rem);
+  }
+
+  .partner-card {
+    min-height: clamp(380px, 40vh, 450px);
+    width: min(40vw, 600px);
+  }
+}
+
+/* Very small screens */
+@media screen and (max-width: 360px) {
+  .container {
+    margin-inline: 0.75rem;
+  }
+
+  .partner-card {
+    width: min(100vw - 1.5rem, 350px);
+    padding: clamp(1rem, 4vw, 1.25rem);
+  }
+
+  .partner-card--dark,
+  .partner-card--yellow {
+    background-size: 30%;
+  }
+}

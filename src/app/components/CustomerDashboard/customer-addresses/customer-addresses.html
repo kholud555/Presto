@@ -1,0 +1,181 @@
+<div class="outer-container">
+        <!-- Inner Container -->
+        <div class="inner-container">
+            <div class="form-section">
+                <div class="d-flex justify-content-center align-items-center mb-3 Address-header">
+                    <h2 class="h5 mb-0 Address-title">
+                        <i class="fas fa-home text-warning me-2"></i>
+                        Addresses
+                    </h2>
+                </div>
+
+                <!-- Error Alert -->
+                <div *ngIf="ErrorMessage" id="errorAlert" class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="errorMessage">{{ErrorMessage}}</span>
+                </div>
+
+                <!-- Success Alert -->
+                <div *ngIf="successMessage" id="successAlert" class="alert alert-success" >
+                    <i class="fas fa-check-circle"></i>
+                    <span id="successMessage">{{successMessage}}</span>
+                </div>
+
+                <div class="d-flex flex-column align-items-end gap-3 mb-3">
+                    <button class="btn btn-orange btn-sm mt-auto text-center" (click)="openModal('add')">
+                        <i class="fas fa-plus me-1"></i>
+                        Add Address
+                    </button>
+                </div>
+
+                <div id="addressList">
+                    @for (item of AddressesView; track $index) {
+                    <!-- Sample Addresses -->
+                    <div class="address-item default fade-in">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <div class="mb-2">
+                                    <span class="address-label default">{{item.label}}</span>
+                                    <small *ngIf="item.isDefault" class="text-warning ms-2 fw-medium">Default</small>
+                                </div>
+                                <p class="mb-0 address-content">{{item.street}}, {{item.city}}</p>
+                            </div>
+                            <div class="address-actions">
+                                <button class="btn btn-outline-primary btn-sm" title="View on Map" (click)="viewOnMap(item.addressID,item.label,item.street,item.city,item.latitude,item.longitude)">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm bootstrap-style" title="Delete" (click)="DeleteAddress(item.addressID)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button class="btn btn-outline-warning btn-sm" title="Set as Default" (click)="MakeDefault(item.addressID)">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Address Modal -->
+    <!-- FIXED Add Address Modal -->
+<!-- Add Address Modal Template -->
+<ng-template #addAddressModal>
+  <div class="modal fade show d-block">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Address</h5>
+          <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Error Alert -->
+                <div *ngIf="adderrorMessage" id="errorAlert" class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="errorMessage">{{adderrorMessage}}</span>
+                </div>
+
+                <!-- Success Alert -->
+                <div *ngIf="addsucessMessage" id="successAlert" class="alert alert-success" >
+                    <i class="fas fa-check-circle"></i>
+                    <span id="successMessage">{{addsucessMessage}}</span>
+                </div>
+
+          <app-map-component 
+            (mapReady)="onMapReady($event)" 
+            (addressInfo)="setAddress($event)" 
+            [formSubmitted]="isAdded">
+          </app-map-component>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-orange" (click)="AddAddress()">Add Address</button>
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Backdrop -->
+  <div class="modal-backdrop fade show"></div>
+</ng-template>
+
+
+<!-- View Map Modal Template -->
+<ng-template #mapModal>
+  <div class="modal fade show d-block">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Location</h5>
+          <button type="button" class="btn-close" (click)="closeViewMap()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="location-section">
+             <div *ngIf="updateErrorMessage" id="errorAlert" class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="errorMessage">{{updateErrorMessage}}</span>
+                </div>
+
+                <!-- Success Alert -->
+                <div *ngIf="updateSuccessMessage" id="successAlert" class="alert alert-success" >
+                    <i class="fas fa-check-circle"></i>
+                    <span id="successMessage">{{updateSuccessMessage}}</span>
+                </div>
+
+            <h3 class="section-title">
+              <i class="fas fa-map-marker-alt"></i> Your Location
+            </h3>
+
+            <!-- Current Location Display -->
+            <div class="current-location">
+              <div class="location-info">
+                <span class="location-label">Current Location:</span>
+                <div class="coordinates">
+                  <span class="coordinate">{{ currentLat | number : "1.6-6" }}</span>,
+                  <span class="coordinate">{{ currentLng | number : "1.6-6" }}</span>
+                </div>
+              </div>
+              <button type="button" 
+                      class="edit-location-btn"
+                      [class.active]="isEditingLocation"
+                      (click)="updateLocationMode()">
+                <i class="fas" [ngClass]="isEditingLocation ? 'fa-save' : 'fa-edit'"></i>
+                {{ isEditingLocation ? "Save Location" : "Edit Location" }}
+              </button>
+            </div>
+
+            <!-- Map -->
+            <div class="map-wrapper">
+              <div id="profileMap" class="map-container"></div>
+              <span *ngIf="set">
+                {{ selectedAddress.label + ' - ' + selectedAddress.street + ', ' + selectedAddress.city }}
+              </span>
+              <div *ngIf="isEditingLocation" class="map-instructions">
+                <i class="fas fa-info-circle"></i>
+                Click on map or drag marker to update location
+              </div>
+            </div>
+
+            <!-- Map Controls -->
+            <div class="map-controls">
+              <button type="button" class="current-location-btn" (click)="getCurrentLocation()">
+                <i class="fas fa-crosshairs"></i> Use Current Location
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-orange" (click)="closeViewMap()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Backdrop -->
+  <div class="modal-backdrop fade show"></div>
+</ng-template>
+
+
+<!-- Render Modals Dynamically -->
+<ng-container *ngIf="isAddModalOpen" [ngTemplateOutlet]="addAddressModal"></ng-container>
+<ng-container *ngIf="isMapModalOpen" [ngTemplateOutlet]="mapModal"></ng-container>

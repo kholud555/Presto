@@ -1,0 +1,13 @@
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <h2>Email Confirmation</h2>
+    <p class="confirmation-message"
+       [ngClass]="{
+          'text-success': message.includes('thank'),
+          'text-danger': message.includes('failed') || message.includes('unable')
+        }">
+      {{ message }}
+    </p>
+    <a (click)="home()" class="btn-confirm mt-4 d-inline-block text-decoration-none">Home</a>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="container py-5 registration-wrapper">
+  <div
+    class="card shadow-lg border-0 w-100"
+    style="max-width: 600px; margin: 0 auto"
+  >
+    <div class="header text-center mb-4">
+      <h1 class="title">Login</h1>
+      <p class="subtitle">Welcome Back 🙌</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+      <!-- Error Message من السيرفر -->
+      <div *ngIf="errorMsg" class="alert alert-danger">
+        {{ errorMsg }}
+      </div>
+
+      <!-- Username Field -->
+      <div class="field mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          pInputText
+          id="username"
+          class="styled-input"
+          placeholder="Username"
+          formControlName="username"
+        />
+        <div
+          class="error-message"
+          *ngIf="
+            loginForm.get('username')?.touched &&
+            loginForm.get('username')?.hasError('required')
+          "
+        >
+          Username is required
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="field mb-4">
+        <label for="password" class="form-label">Password</label>
+        <p-password
+          id="password"
+          class="styled-password"
+          formControlName="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Password"
+        ></p-password>
+        <div
+          class="error-message"
+          *ngIf="
+            loginForm.get('password')?.touched &&
+            loginForm.get('password')?.hasError('required')
+          "
+        >
+          Password is required
+        </div>
+        <small
+          >Forgot Password?
+          <a class="link fw-semibold" (click)="forgotPassword()">Reset Password</a>
+        </small>
+      </div>
+      <!-- <div class="text-center mt-3">
+        
+      </div> -->
+      <!-- Submit Button -->
+      <button type="submit" class="button-8 w-100" [disabled]="isLoading">
+        {{ isLoading ? "Logging in..." : "Login" }}
+      </button>
+
+      <div class="text-center mt-3">
+        <small
+          >Create a new account?
+          <a class="link fw-semibold" (click)="signup()">SignUp</a>
+        </small>
+      </div>
+    </form>
+  </div>
+</div>

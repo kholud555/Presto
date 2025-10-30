@@ -1,0 +1,210 @@
+<div class="container py-5 registration-wrapper">
+  <div
+    class="card shadow-lg border-0 w-100"
+    style="max-width: 600px; margin: 0 auto"
+  >
+    <div class="header text-center mb-4">
+      <h1 class="title">Create an Account</h1>
+      <p class="subtitle">Join us and start your food journey today!</p>
+    </div>
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      class="registration-form"
+    >
+      <div class="form-group mb-3">
+        <label class="form-label">First Name</label>
+        <input
+          type="text"
+          formControlName="firstName"
+          class="form-control"
+          placeholder="First Name"
+          [class.error]="isFieldInvalid('firstName')"
+          [class.success]="isFieldValid('firstName')"
+        />
+            <span *ngIf="isFieldInvalid('firstName')" class="error-message">
+            <span *ngIf="registerForm.get('firstName')?.errors?.['required']"
+              >First Name is required</span
+            >
+            <span
+              *ngIf="registerForm.get('firstName')?.errors?.['minlength']"
+              >First Name must be at least 2 characters</span
+            >
+          </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">Last Name</label>
+        <input
+          type="text"
+          formControlName="lastName"
+          class="form-control"
+          placeholder="Last Name"
+          [class.error]="isFieldInvalid('lastName')"
+          [class.success]="isFieldValid('lastName')"
+        />
+        <span *ngIf="isFieldInvalid('lastName')" class="error-message">
+            <span *ngIf="registerForm.get('lastName')?.errors?.['required']"
+              >Last Name is required</span
+            >
+            <span
+              *ngIf="registerForm.get('lastName')?.errors?.['minlength']"
+              >Last Name must be at least 2 characters</span
+            >
+          </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">User Name</label>
+        <input
+          type="text"
+          formControlName="userName"
+          class="form-control"
+          placeholder="User Name"
+          [class.error]="isFieldInvalid('userName')"
+          [class.success]="isFieldValid('userName')"
+        />
+        <span *ngIf="isFieldInvalid('userName')" class="error-message">
+            <span *ngIf="registerForm.get('userName')?.errors?.['required']"
+              >UserName is required</span
+            >
+            <span
+              *ngIf="registerForm.get('userName')?.errors?.['minlength']"
+              >UserName must be at least 3 characters</span
+            >
+          </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="form-control"
+          placeholder="your@email.com"
+          [class.error]="isFieldInvalid('email')"
+          [class.success]="isFieldValid('email')"
+        />
+        <span *ngIf="isFieldInvalid('email')" class="error-message">
+            <span *ngIf="registerForm.get('email')?.errors?.['required']"
+              >Email is required</span
+            >
+            <span
+              *ngIf="registerForm.get('email')?.errors?.['emailValidator']"
+              >please enter a valid email address </span
+            >
+          </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label">Phone</label>
+        <input
+          type="text"
+          formControlName="phoneNumber"
+          class="form-control"
+          placeholder="01xxxxxxxxx"
+          [class.error]="isFieldInvalid('phoneNumber')"
+          [class.success]="isFieldValid('phoneNumber')"
+        />
+        <span *ngIf="isFieldInvalid('phoneNumber')" class="error-message">
+            <span *ngIf="registerForm.get('phoneNumber')?.errors?.['required']"
+              >Phone Number is required</span
+            >
+            <span
+              *ngIf="registerForm.get('phoneNumber')?.errors?.['phoneValidator']"
+              >Enter Valid Phone Number should be like 01xxxxxxxxx</span
+            >
+          </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="password" class="form-label">Password</label>
+        <p-password
+          id="password"
+          class="styled-password"
+          formControlName="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Enter your password"
+          [class.error]="isFieldInvalid('password')"
+          [class.success]="isFieldValid('password')"
+          ></p-password>
+          <div class="password-requirements" *ngIf="!registerForm.get('password')?.errors?.['required']">
+            <small *ngIf="!hasUpperCase" class="requirement" [class.met]="hasUpperCase"
+              >✓ At least one uppercase letter</small
+            >
+            <small *ngIf="!hasSpecialChar" class="requirement" [class.met]="hasSpecialChar"
+              >✓ At least one special character</small
+            >
+            <small *ngIf="!hasMinLength" class="requirement" [class.met]="hasMinLength"
+              >✓ At least 8 characters</small
+            >
+          </div>
+          <span *ngIf="isFieldInvalid('password')" class="error-message">
+            <span *ngIf="registerForm.get('password')?.errors?.['required']">
+              Password is required</span>
+          </span>
+          <!-- <small *ngIf="form.controls['newPassword'].invalid && form.controls['newPassword'].touched" class="text-danger">
+          Password must be 8+ characters, include uppercase, lowercase, number, and special character.
+          </small> -->
+        <!-- <div class="password-input-wrapper position-relative">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            class="form-control"
+            placeholder="Enter your password"
+          />
+          <button type="button" class="btn btn-sm btn-link position-absolute top-50 end-0 translate-middle-y me-2" (click)="togglePasswordVisibility()">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button> 
+        </div>-->
+      </div>
+      <div class="form-group mb-3 text-start position-relative">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <p-password
+          id="confirmPassword"
+          class="styled-password"
+          formControlName="confirmPassword"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Confirm password"
+          [class.error]="isFieldInvalid('password')|| registerForm.errors?.['passwordMismatch']"
+          [class.success]="isFieldValid('password') && registerForm.errors?.['passwordMismatch']==null"
+        ></p-password>
+        <span *ngIf="isFieldInvalid('confirmPassword') || registerForm.errors?.['passwordMismatch']" class="error-message">
+            <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
+              >this field is required</span>
+            <span
+              *ngIf="registerForm.errors?.['passwordMismatch'] && !registerForm.get('confirmPassword')?.errors?.['required']"
+              >Confirm Password doesn’t match Password</span
+            >
+          </span>
+        <!-- <small *ngIf="form.errors?.['mismatch'] && form.controls['confirmPassword'].touched" class="text-danger">
+          Passwords do not match.
+        </small> -->
+      </div>
+      <!-- <div class="form-group mb-3">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Confirm Password" />
+      </div> -->
+      <app-map-component (addressInfo)="setAddress($event)"  [formSubmitted]="isRegestered"></app-map-component>
+      <button type="submit" class="btn btn-primary w-100">Create Account</button>
+
+      <div class="text-center mt-3">
+        <small
+          >Already have an account?
+          <a routerLink="/login" class="link fw-semibold">Log In</a>
+        </small>
+      </div>
+      <div
+          *ngIf="submitMessage"
+          class="submit-message"
+          [class.success]="submitSucess"
+          [class.error]="!submitSucess"
+        >
+          {{ submitMessage }}
+        </div>
+    </form>
+  </div>
+</div>

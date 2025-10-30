@@ -1,0 +1,79 @@
+<div class="navbar">
+  <div class="logo">
+    <img class="logo_img" src="Assets/logo.png" alt="Logo" />
+  </div>
+  <ul class="links">
+    <li><a class="nav_link" [routerLink]="['/home']">Home</a></li>
+    <li>
+      <a class="nav_link" (click)="scrollTo('restaurant')">Restaurants</a>
+    </li>
+    <li><a class="nav_link" (click)="scrollTo('joinUs')">Join Us</a></li>
+    <li><a class="nav_link" (click)="scrollTo('aboutUs')">About Us</a></li>
+    <li>
+      <a class="nav_link" (click)="scrollTo('contactUs')">Contact Us</a>
+    </li>
+    <li><a class="nav_link" href="/CustomerDashboard">Dashboard</a></li>
+  </ul>
+  <div class="btn_container">
+    <div class="btns">
+      <a class="signIn_link" *ngIf="!authService.isLoggedIn()" (click)="login()"
+        >Sign In
+        <i class="fa-solid fa-user"></i>
+      </a>
+      <a class="signIn_link" *ngIf="authService.isLoggedIn()" (click)="logout()"
+        >Sign out
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </a>
+    </div>
+
+    <div (click)="GoToCart()" class="btns">
+      <a  class="cart_link"
+        >Cart
+        <i class="fa-solid fa-cart-shopping"></i>
+      </a>
+    </div>
+  </div>
+  <div class="toggle_btn" (click)="onToggleMenu()">
+    <i #toggleBtnIcon class="fa-solid fa-bars-staggered"></i>
+  </div>
+</div>
+
+<div #dropDownMenu class="dropdown_menu">
+  <li>
+    <a class="dropdown_link" (click)="scrollToHome()" active-link>Home</a>
+  </li>
+  <li>
+    <a class="dropdown_link" (click)="scrollTo('restaurant')">Restaurants</a>
+  </li>
+  <li><a class="dropdown_link" (click)="scrollTo('aboutUs')">About Us</a></li>
+  <li><a class="nav_link" (click)="scrollTo('joinUs')">Join Us</a></li>
+  <li><a class="nav_link" (click)="scrollTo('contactUs')">Contact Us</a></li>
+  <li>
+    <a class="dropdown_link" (click)="navigateToDashboard()">Dashboard</a>
+  </li>
+
+  <!-- Sign in -->
+  <div class="btn_dropdown">
+    <div class="btns">
+      <a class="signIn_link" *ngIf="!authService.isLoggedIn()" (click)="login()"
+        >Sign In
+        <i class="fa-solid fa-user"></i>
+      </a>
+
+      <a class="signIn_link" *ngIf="authService.isLoggedIn()" (click)="logout()"
+        >Sign out
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </a>
+    </div>
+
+    <!-- cart btn -->
+    <div class="btn_dropdown">
+      <div (click)="GoToCart()" class="btns">
+        <a class="cart_link" 
+          >Cart
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

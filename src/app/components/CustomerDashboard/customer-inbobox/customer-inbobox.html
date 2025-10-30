@@ -1,0 +1,42 @@
+<div class="app-container">
+  <div class="customerChat-container">
+    <div class="customerChat-header">
+      <h1 class="customerChat-title">Chat with admin</h1>
+    </div>
+    <!-- Chat history -->
+    <div #chatHistory class="chat-history">
+      <div *ngIf="messages.length === 0" class="empty-state">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48
+                   10 10 10 10-4.48 10-10S17.52 2
+                   12 2zm-2 15l-5-5 1.41-1.41L10
+                   14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <p>Start a conversation with admin</p>
+        <p style="font-size: 0.875rem; opacity: 0.7;">Type a message below to get started</p>
+      </div>
+      <div *ngFor="let msg of messages"
+           [ngClass]="{'message': true, 'outgoing': msg.isOutgoing, 'incoming': !msg.isOutgoing}">
+        <div class="message-bubble">
+          {{ msg.content }}
+          <div class="message-time">{{ msg.time }}</div>
+        </div>
+      </div>
+    </div>
+    <!-- Chat input -->
+    <div class="chat-input-area">
+      <textarea #chatInput class="chat-input"
+                placeholder="Type your message here..."
+                rows="1"
+                (input)="adjustTextareaHeight()"
+                (keypress)="onEnterPress($event)">
+      </textarea>
+      <button class="send-button" (click)="sendMessage()">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15
+                   2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

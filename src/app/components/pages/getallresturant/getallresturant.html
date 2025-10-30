@@ -1,0 +1,39 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 restaurant_logo">
+      <app-resturanrt-logo class="m-5"></app-resturanrt-logo>
+    </div>
+    <div class="card__container">
+      @for (restaurant of restaurants; track restaurant.restaurantName) {
+      <article class="card__article">
+        <img
+          [src]="
+            'https://prestoordering.somee.com/' +
+            (restaurant.imageFile?.startsWith('wwwroot')
+              ? restaurant.imageFile.slice(8)
+              : restaurant.imageFile)
+          "
+          alt="image"
+          class="card__img"
+        />
+
+        <div class="card__data">
+          <span class="card__description">{{ restaurant.location }}</span>
+          <h2 class="card__title">
+            {{ restaurant.restaurantName }}
+          </h2>
+          <button
+            class="card__button"
+            (click)="goToRestaurantItems(restaurant.restaurantName)"
+          >
+            Show Menu
+          </button>
+        </div>
+      </article>
+      }
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

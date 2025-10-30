@@ -1,0 +1,91 @@
+<section class="home section" id="home">
+  <div class="home_container container grid">
+    <div class="home_data">
+      <span class="home_subtitle">Order Restaurant Food, takeaway.</span>
+      <h1 class="home_title">
+        Fresh And Fast,
+        <br />
+        <span class="home_title_part2"> Every Time</span>
+      </h1>
+      <span class="home_input_explaination">Search For Items</span>
+
+      <!--Search button -->
+      <form class="home_search" (ngSubmit)="onSearch($event)">
+        <input
+          type="text"
+          class="home_input"
+          [(ngModel)]="searchTerm"
+          name="searchInput"
+          placeholder="Pizza"
+        />
+        <button
+          class="button-8"
+          type="submit"
+          data-bs-toggle="modal"
+          data-bs-target="#searchModal"
+        >
+          Search Now!
+        </button>
+      </form>
+    </div>
+
+    <div class="home_images">
+      <img src="Assets/home-burger.png" alt="image" class="home_burger" />
+
+      <img src="Assets/home-dish.png" alt="image" class="home_dish" />
+
+      <img
+        src="Assets/home-potato.png"
+        alt="image"
+        class="home_ingredient home_potato-1"
+      />
+      <img
+        src="Assets/home-potato.png"
+        alt="image"
+        class="home_ingredient home_potato-2"
+      />
+
+      <img
+        src="Assets/home-tomato.png"
+        alt="image"
+        class="home_ingredient home_tomato-1"
+      />
+      <img
+        src="Assets/home-tomato.png"
+        alt="image"
+        class="home_ingredient home_tomato-2"
+      />
+
+      <img
+        src="Assets/home-lettuce.png"
+        alt="image"
+        class="home_ingredient home_lettuce-1"
+      />
+      <img
+        src="Assets/home-lettuce.png"
+        alt="image"
+        class="home_ingredient home_lettuce-2"
+      />
+    </div>
+  </div>
+</section>
+<!-- Modal بالـ structure الصحيح -->
+<div class="modal fade" id="searchModal" tabindex="-1">
+  <div class="modal-dialog modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Search Result</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-home-search-result
+          [searchTerm]="searchTerm"
+        ></app-home-search-result>
+      </div>
+    </div>
+  </div>
+</div>
